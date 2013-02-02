@@ -8,6 +8,7 @@
 require 'milkode/cdstk/cdstk'
 require 'milkode/cdweb/cli_cdweb'
 require 'milkode/cdstk/yaml_file_wrapper'
+require 'milkode/cdweb/lib/database'
 
 module Mygithub
   class MilkodeAccessor
@@ -57,6 +58,10 @@ EOF
       !@yaml.find_name(name).nil?
     end
 
+    def database_exitst?
+      @yaml && @yaml.contents.size > 0
+    end
+
     def web(options)
       opts = {
         :environment   => ENV['RACK_ENV'] || "development",
@@ -68,11 +73,28 @@ EOF
         # ----------------------------
         :server        => options[:server],
         :LaunchBrowser => !options[:no_browser],
+        :LaunchURL     => database_exitst? ? nil : '/auth/github',
         :DbDir         => options[:db],
       }
 
       Milkode::Cdstk.new($stdout, options[:db]).assert_compatible
-      Milkode::CLI_Cdweb.execute_with_options($stdout, opts)
+
+      # Milkode::CLI_Cdweb.execute_with_options($stdout, opts)
+      cdweb_execute_with_options($stdout, opts)
+    end
+
+    # milkode/cdweb/cli_cdweb.rb:95
+    def cdweb_execute_with_options(stdout, options)
+      dbdir = File.expand_path(options[:DbDir])
+
+      # 使用するデータベースの位置設定
+      Milkode::Database.setup(dbdir)
+
+      # サーバースクリプトのある場所へ移動
+      FileUtils.cd(File.join File.dirname(__FILE__), 'web')
+
+      # Rackサーバー起動
+      Rack::Server.start(options)
     end
   end
 end
