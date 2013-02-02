@@ -2,4 +2,4 @@
 
 require "mygithub"
 
-MyGithub::CLI.start
+Mygithub::CLI.start

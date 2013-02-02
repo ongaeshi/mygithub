@@ -9,11 +9,11 @@ require 'rubygems'
 require 'thor'
 # require 'qiita_mail/cli_core'
 
-module MyGithub
+module Mygithub
   class CLI < Thor
     desc "init", "Init setting."
     def init
-      puts "Hello, MyGithub!"
+      puts "Hello, Mygithub!"
     end
   end
 end
