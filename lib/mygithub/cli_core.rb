@@ -9,12 +9,16 @@ require 'mygithub/settings'
 require 'milkode/cdstk/cdstk'
 require 'milkode/cdweb/cli_cdweb'
 require 'mygithub/github_accessor'
+require 'milkode/cdstk/yaml_file_wrapper'
+require 'mygithub/milkode_accessor'
 
 module Mygithub
   class CliCore
     def initialize
       @settings = Settings.new
       @dbdir    = Settings.default_database
+      @github   = GithubAccessor.new(@settings.token)
+      @milk     = MilkodeAccessor.new @dbdir
     end
 
     def init(options)
@@ -29,28 +33,23 @@ module Mygithub
     end
 
     def update(args, options)
-      cdstk = create_cdstk
-      gh    = create_github
+      @milk.init
+      @milk.create_milkweb_yaml
 
-      # Init database
-      unless File.exist? @dbdir
-        FileUtils.mkdir_p @dbdir
-        cdstk.init({})
-      end
-
-      # Create milkweb.yaml
-      create_milkweb_yaml
-      
-      # Add git repositories
       if args.empty?
-        repos = gh.repo_names
+        repos = @github.repo_names
       else
         repos = args.map{|arg| @settings.username + '/' + arg }
       end
 
-      giturls = repos.map{|name| 'git://github.com/' + name + '.git'}
+      # yaml = YamlFileWrapper.load(@dbdir)
 
-      cdstk.add(giturls, {})
+      # repos.each do |name|
+      #   p [name, yaml.find_name(args[0])]
+      # end
+
+      giturls = repos.map{|name| 'git://github.com/' + name + '.git'}
+      @milk.add(giturls, {})
     end
 
     def web(options)
@@ -69,34 +68,6 @@ module Mygithub
 
       Milkode::Cdstk.new($stdout, options[:db]).assert_compatible
       Milkode::CLI_Cdweb.execute_with_options($stdout, opts)
-    end
-
-    private
-
-    def create_github
-       GithubAccessor.new(@settings.token)
-    end
-
-    def create_cdstk
-      Milkode::Cdstk.new($stdout, Settings.default_database)
-    end
-
-    def create_milkweb_yaml
-      filename = File.join(@dbdir, 'milkweb.yaml')
-
-      # @todo アイコンはAPI経由で取得する
-      File.open(filename, "w") do |f|
-        f.write <<EOF
----
-:home_title : "MyGithub"
-:home_icon  : "http://www.gravatar.com/avatar/6377451175704e2d367ce508bffc1fa5"
-
-:header_title: "MyGithub"
-:header_icon : "http://www.gravatar.com/avatar/6377451175704e2d367ce508bffc1fa5"
-
-:display_about_milkode: false
-EOF
-      end
     end
   end
 end
