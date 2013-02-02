@@ -8,6 +8,7 @@
 require 'rubygems'
 require 'thor'
 require 'mygithub/cli_core'
+require 'mygithub/settings'
 
 module Mygithub
   class CLI < Thor
@@ -18,7 +19,7 @@ module Mygithub
     end
 
     desc "web", "Startup web interface"
-    option :db, :default => '/Users/ongaeshi/.mygithub/database'
+    option :db, :default => Settings.default_database
     option :host, :default => '127.0.0.1', :aliases => '-o'
     option :port, :default => 9292, :aliases => '-p'
     option :server, :default => 'thin', :aliases => '-s'
