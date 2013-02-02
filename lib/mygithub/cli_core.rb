@@ -6,6 +6,8 @@
 # @date   2013/02/02
 
 require 'mygithub/settings'
+require 'milkode/cdstk/cdstk'
+require 'milkode/cdweb/cli_cdweb'
 
 module Mygithub
   class CliCore
@@ -22,6 +24,24 @@ module Mygithub
         puts "Already exists '#{Settings.default_filename}'."
         puts "Please edit YAML settings!"
       end
+    end
+
+    def web(options)
+      opts = {
+        :environment   => ENV['RACK_ENV'] || "development",
+        :pid           => nil,
+        :Port          => options[:port],
+        :Host          => options[:host],
+        :AccessLog     => [],
+        :config        => "config.ru",
+        # ----------------------------
+        :server        => options[:server],
+        :LaunchBrowser => !options[:no_browser],
+        :DbDir         => options[:db],
+      }
+
+      Milkode::Cdstk.new($stdout, options[:db]).assert_compatible
+      Milkode::CLI_Cdweb.execute_with_options($stdout, opts)
     end
   end
 end
