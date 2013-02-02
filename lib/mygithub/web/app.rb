@@ -16,6 +16,10 @@ class Sinatra::Base
   end
 end
 
+get '/auth/github' do
+  'OAuth Github'
+end
+
 get '/css/mygithub.css' do
   scss :mygithub
 end
