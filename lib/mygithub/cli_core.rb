@@ -44,13 +44,19 @@ module Mygithub
       end
 
       # update or add
+      add_repos    = []
+      update_repos = []
+      
       names.each do |name|
         unless @milk.exist? name
-          @milk.add("git://github.com/#{@settings.username}/#{name}.git")
+          add_repos << "git://github.com/#{@settings.username}/#{name}.git"
         else
-          @milk.update(name)
+          update_repos << name
         end
       end
+
+      @milk.add add_repos       unless add_repos.empty?
+      @milk.update update_repos unless update_repos.empty?
     end
 
     def web(options)

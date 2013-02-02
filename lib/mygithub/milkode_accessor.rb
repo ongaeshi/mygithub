@@ -45,16 +45,16 @@ EOF
       end
     end
 
-    def add(path)
-      @cdstk.add([path], {})
+    def add(args)
+      @cdstk.add(args, {})
+    end
+
+    def update(args)
+      @cdstk.update(args, {})      
     end
 
     def exist?(name)
       !@yaml.find_name(name).nil?
-    end
-
-    def update(name)
-      @cdstk.update([name], {})      
     end
 
     def web(options)
