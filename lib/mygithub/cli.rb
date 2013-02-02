@@ -26,7 +26,7 @@ module Mygithub
     desc "web", "Startup web interface"
     option :db, :default => Settings.default_database
     option :host, :default => '127.0.0.1', :aliases => '-o'
-    option :port, :default => 9292, :aliases => '-p'
+    option :port, :default => 9295, :aliases => '-p'
     option :server, :default => 'thin', :aliases => '-s'
     option :no_browser, :type => :boolean, :default => false, :aliases => '-n', :type => :boolean, :desc => 'Do not launch browser.'
     option :customize, :type => :boolean, :desc => 'Create customize file.'
