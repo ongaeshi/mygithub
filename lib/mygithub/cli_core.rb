@@ -16,9 +16,8 @@ module Mygithub
   class CliCore
     def initialize
       @settings = Settings.new
-      @dbdir    = Settings.default_database
-      @github   = GithubAccessor.new(@settings.token)
-      @milk     = MilkodeAccessor.new @dbdir
+      @github   = GithubAccessor.new @settings.token
+      @milk     = MilkodeAccessor.new Settings.default_database
     end
 
     def init(options)
@@ -53,21 +52,7 @@ module Mygithub
     end
 
     def web(options)
-      opts = {
-        :environment   => ENV['RACK_ENV'] || "development",
-        :pid           => nil,
-        :Port          => options[:port],
-        :Host          => options[:host],
-        :AccessLog     => [],
-        :config        => "config.ru",
-        # ----------------------------
-        :server        => options[:server],
-        :LaunchBrowser => !options[:no_browser],
-        :DbDir         => options[:db],
-      }
-
-      Milkode::Cdstk.new($stdout, options[:db]).assert_compatible
-      Milkode::CLI_Cdweb.execute_with_options($stdout, opts)
+      @milk.web(options)
     end
   end
 end

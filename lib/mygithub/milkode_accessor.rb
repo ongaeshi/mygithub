@@ -46,6 +46,24 @@ EOF
     def add(args, options)
       @cdstk.add(args, options)
     end
+
+    def web(options)
+      opts = {
+        :environment   => ENV['RACK_ENV'] || "development",
+        :pid           => nil,
+        :Port          => options[:port],
+        :Host          => options[:host],
+        :AccessLog     => [],
+        :config        => "config.ru",
+        # ----------------------------
+        :server        => options[:server],
+        :LaunchBrowser => !options[:no_browser],
+        :DbDir         => options[:db],
+      }
+
+      Milkode::Cdstk.new($stdout, options[:db]).assert_compatible
+      Milkode::CLI_Cdweb.execute_with_options($stdout, opts)
+    end
   end
 end
   
