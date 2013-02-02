@@ -16,12 +16,14 @@ module Mygithub
     def initialize(dbdir)
       @dbdir = dbdir
       @cdstk = Milkode::Cdstk.new($stdout, @dbdir)
+      @yaml = YamlFileWrapper.load_if(@dbdir)
     end
 
     def init
       unless File.exist? @dbdir
         FileUtils.mkdir_p @dbdir
         @cdstk.init({})
+        @yaml = YamlFileWrapper.load_if(@dbdir)        
       end
     end
 
@@ -43,8 +45,16 @@ EOF
       end
     end
 
-    def add(args, options)
-      @cdstk.add(args, options)
+    def add(path)
+      @cdstk.add([path], {})
+    end
+
+    def exist?(name)
+      !@yaml.find_name(name).nil?
+    end
+
+    def update(name)
+      @cdstk.update([name], {})      
     end
 
     def web(options)

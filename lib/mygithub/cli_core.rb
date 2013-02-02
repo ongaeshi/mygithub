@@ -32,23 +32,25 @@ module Mygithub
     end
 
     def update(args, options)
+      # initialize
       @milk.init
       @milk.create_milkweb_yaml
 
+      # Get repo_names
       if args.empty?
-        repos = @github.repo_names
+        names = @github.repo_names.map {|r| r.sub(@settings.username + '/', "")}
       else
-        repos = args.map{|arg| @settings.username + '/' + arg }
+        names = args
       end
 
-      # yaml = YamlFileWrapper.load(@dbdir)
-
-      # repos.each do |name|
-      #   p [name, yaml.find_name(args[0])]
-      # end
-
-      giturls = repos.map{|name| 'git://github.com/' + name + '.git'}
-      @milk.add(giturls, {})
+      # update or add
+      names.each do |name|
+        unless @milk.exist? name
+          @milk.add("git://github.com/#{@settings.username}/#{name}.git")
+        else
+          @milk.update(name)
+        end
+      end
     end
 
     def web(options)
