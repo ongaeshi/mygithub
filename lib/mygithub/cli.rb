@@ -7,12 +7,21 @@
 
 require 'rubygems'
 require 'thor'
+require 'mygithub/cli_core'
 
 module Mygithub
   class CLI < Thor
     desc "init", "Init setting."
+    option :no_save, :type => :boolean, :desc => 'No save.'
     def init
-      puts "Hello, Mygithub!"
+      CliCore.new.init(options)
     end
   end
 end
+
+
+
+
+
+
+
