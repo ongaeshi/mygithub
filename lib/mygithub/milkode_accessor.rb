@@ -58,6 +58,10 @@ EOF
       !@yaml.find_name(name).nil?
     end
 
+    def database_exitst?
+      @yaml && @yaml.contents.size > 0
+    end
+
     def web(options)
       opts = {
         :environment   => ENV['RACK_ENV'] || "development",
@@ -69,6 +73,7 @@ EOF
         # ----------------------------
         :server        => options[:server],
         :LaunchBrowser => !options[:no_browser],
+        :LaunchURL     => database_exitst? ? nil : '/auth/github',
         :DbDir         => options[:db],
       }
 
