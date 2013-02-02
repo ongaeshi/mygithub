@@ -13,17 +13,18 @@ module Mygithub
     attr_reader :token
     
     def initialize(username, token)
+      @username = username
       @token    = token
 
-      # @todo なぜかSSL関連でエラーが出たので認証をOFFにしている
-      # @github = Github.new(:username => username, :oauth_token => @token)
-      @github = Github.new do |config|
-        config.endpoint    = 'https://api.github.com/'
-        config.user        = username
-        config.oauth_token = token                      # @memo 何故か'@token'にすると動かない
-        config.adapter     = :net_http
-        config.ssl         = {:verify => false}
-      end      
+      @github = Github.new(:oauth_token => @token)
+      # @memo SSL証明書絡みでエラーが出たらこちら
+      # @github = Github.new do |config|
+      #   config.endpoint    = 'https://api.github.com/'
+      #   config.user        = username
+      #   config.oauth_token = token                      # @memo 何故か'@token'にすると動かない
+      #   config.adapter     = :net_http
+      #   config.ssl         = {:verify => false}
+      # end      
     end
 
     class Repository
@@ -54,7 +55,7 @@ module Mygithub
     end
 
     def username
-      @github.users.user
+      @username
     end
 
     def avatar_url
