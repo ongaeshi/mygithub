@@ -19,8 +19,8 @@ module Mygithub
     end
 
     desc "update", "Pull repositories"
-    def update
-      CliCore.new.update(options)
+    def update(*args)
+      CliCore.new.update(args, options)
     end
 
     desc "web", "Startup web interface"

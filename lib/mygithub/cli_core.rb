@@ -27,15 +27,22 @@ module Mygithub
       end
     end
 
-    def update(options)
+    def update(args, options)
       # 
       
-      # Add all repositories
+      # Add git repositories
       cdstk = create_cdstk
       gh    = create_github
-      repos = gh.repo_names.map{|name| 'git://github.com/' + name + '.git'}
 
-      cdstk.add(repos, {})
+      if args.empty?
+        repos = gh.repo_names
+      else
+        repos = args.map{|arg| @settings.username + '/' + arg }
+      end
+
+      giturls = repos.map{|name| 'git://github.com/' + name + '.git'}
+
+      cdstk.add(giturls, {})
     end
 
     def web(options)
