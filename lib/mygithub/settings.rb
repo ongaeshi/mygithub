@@ -10,8 +10,16 @@ require 'fileutils'
 
 module Mygithub
   class Settings
+    def self.default_dir
+      File.expand_path('~/.mygithub')
+    end
+
     def self.default_filename
-      File.expand_path('~/.mygithub/mygithub.yaml')
+      File.join default_dir, 'mygithub.yaml'
+    end
+
+    def self.default_database
+      File.join default_dir, 'database'
     end
     
     def initialize(filename = Settings.default_filename)
