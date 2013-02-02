@@ -73,7 +73,7 @@ EOF
         # ----------------------------
         :server        => options[:server],
         :LaunchBrowser => !options[:no_browser],
-        :LaunchURL     => database_exitst? ? nil : '/auth/github',
+        :LaunchURL     => database_exitst? ? nil : '/login',
         :DbDir         => options[:db],
       }
 

@@ -16,7 +16,7 @@ class Sinatra::Base
   end
 end
 
-get '/auth/github' do
+get '/login' do
   'OAuth Github'
 end
 
