@@ -6,6 +6,7 @@
 # @date   2013/02/02
 
 require 'github_api'
+require 'date'
 
 module Mygithub
   class GithubAccessor
@@ -25,18 +26,31 @@ module Mygithub
       end      
     end
 
+    class Repository
+      attr_accessor :pushed_at
+      
+      def initialize(repo)
+        @repo      = repo
+        @pushed_at = DateTime.parse(repo.pushed_at)
+      end
+
+      def full_name
+        @repo.full_name
+      end
+    end
+
     def repo_names
-      repo_names = []
+      repos = []
       page       = 1
 
       while (true)
-        r = @github.repos.list(:per_page => 100, :page => page).map {|r| r.full_name}
+        r = @github.repos.list(:per_page => 100, :page => page).map {|r| Repository.new(r)}
         break if r.empty?
-        repo_names += r
+        repos += r
         page += 1
       end
 
-      repo_names
+      repos.sort_by{|r| r.pushed_at}.map{|r| r.full_name}
     end
 
     def username
