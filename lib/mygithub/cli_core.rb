@@ -8,11 +8,16 @@
 require 'mygithub/settings'
 require 'milkode/cdstk/cdstk'
 require 'milkode/cdweb/cli_cdweb'
+require 'mygithub/github_accessor'
+require 'milkode/cdstk/yaml_file_wrapper'
+require 'mygithub/milkode_accessor'
 
 module Mygithub
   class CliCore
     def initialize
       @settings = Settings.new
+      @github   = GithubAccessor.new @settings.username, @settings.token
+      @milk     = MilkodeAccessor.new Settings.default_database
     end
 
     def init(options)
@@ -26,22 +31,36 @@ module Mygithub
       end
     end
 
-    def web(options)
-      opts = {
-        :environment   => ENV['RACK_ENV'] || "development",
-        :pid           => nil,
-        :Port          => options[:port],
-        :Host          => options[:host],
-        :AccessLog     => [],
-        :config        => "config.ru",
-        # ----------------------------
-        :server        => options[:server],
-        :LaunchBrowser => !options[:no_browser],
-        :DbDir         => options[:db],
-      }
+    def update(args, options)
+      # initialize
+      @milk.init
+      @milk.create_milkweb_yaml(@github.avatar_url)
 
-      Milkode::Cdstk.new($stdout, options[:db]).assert_compatible
-      Milkode::CLI_Cdweb.execute_with_options($stdout, opts)
+      # Get repo_names
+      if args.empty?
+        names = @github.repo_names.map {|r| r.sub(@settings.username + '/', "")}
+      else
+        names = args
+      end
+
+      # update or add
+      add_repos    = []
+      update_repos = []
+      
+      names.each do |name|
+        unless @milk.exist? name
+          add_repos << "git://github.com/#{@settings.username}/#{name}.git"
+        else
+          update_repos << name
+        end
+      end
+
+      @milk.add add_repos       unless add_repos.empty?
+      @milk.update update_repos unless update_repos.empty?
+    end
+
+    def web(options)
+      @milk.web(options)
     end
   end
 end

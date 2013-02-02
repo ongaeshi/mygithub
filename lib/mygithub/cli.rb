@@ -18,6 +18,11 @@ module Mygithub
       CliCore.new.init(options)
     end
 
+    desc "update", "Pull repositories"
+    def update(*args)
+      CliCore.new.update(args, options)
+    end
+
     desc "web", "Startup web interface"
     option :db, :default => Settings.default_database
     option :host, :default => '127.0.0.1', :aliases => '-o'
