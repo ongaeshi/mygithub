@@ -27,7 +27,7 @@ module Mygithub
     end
 
     def update(options)
-      puts "Update!!"
+      cdstk.update_all({})
     end
 
     def web(options)
@@ -46,6 +46,12 @@ module Mygithub
 
       Milkode::Cdstk.new($stdout, options[:db]).assert_compatible
       Milkode::CLI_Cdweb.execute_with_options($stdout, opts)
+    end
+
+    private
+
+    def cdstk
+      Milkode::Cdstk.new($stdout, Settings.default_database)
     end
   end
 end
