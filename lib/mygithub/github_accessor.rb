@@ -26,7 +26,17 @@ module Mygithub
     end
 
     def repo_names
-      @github.repos.list.map {|r| r.full_name}
+      repo_names = []
+      page       = 1
+
+      while (true)
+        r = @github.repos.list(:per_page => 100, :page => page).map {|r| r.full_name}
+        break if r.empty?
+        repo_names += r
+        page += 1
+      end
+
+      repo_names
     end
 
     def username
