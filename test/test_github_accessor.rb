@@ -25,7 +25,8 @@ module Mygithub
     end
 
     def test_repo_names
-      @gh.repo_names                                 # Exec test
+      # p @gh.repo_names                                 # Exec test
+      @gh.repo_names
     end
   end
 end

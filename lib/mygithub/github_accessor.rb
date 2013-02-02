@@ -27,7 +27,7 @@ module Mygithub
     end
 
     def repo_names
-      @github.repos.list(:user => @username).map {|r| r.full_name}
+      @github.repos.list.map {|r| r.full_name}
     end
   end
 end
