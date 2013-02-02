@@ -50,8 +50,16 @@ module Mygithub
       @data['username']
     end
 
+    def username=(username)
+      @data['username'] = username
+    end
+
     def token
       @data['token']
+    end
+
+    def token=(token)
+      @data['token'] = token
     end
 
     def empty?
@@ -59,5 +67,6 @@ module Mygithub
     end
   end
 end
+
 
 

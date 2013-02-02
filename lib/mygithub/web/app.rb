@@ -8,10 +8,11 @@
 require 'milkode/cdweb/app'
 require 'omniauth'
 require 'omniauth-github'
+require 'mygithub/settings'
+require 'mygithub/cli_core'
 
 use Rack::Session::Cookie
 use OmniAuth::Builder do
-  # provider :github, '507d8ff7541315a61b21', '8a62747fc27f1570370669d5495afdfb4f86682f', scope: "user,repo"
   provider :github, '507d8ff7541315a61b21', '8a62747fc27f1570370669d5495afdfb4f86682f'
 end
 
@@ -36,7 +37,18 @@ end
 
 get '/auth/github/callback' do
   auth = request.env['omniauth.auth']
-  p [auth.credentials[:token], auth.extra[:raw_info][:login]]
+
+  # Setup mygithub.yaml
+  settings = Mygithub::Settings.new
+  settings.username = auth.extra[:raw_info][:login]
+  settings.token    = auth.credentials[:token]
+  settings.save
+
+  # Update repositories
+  # cli = Mygithub::CliCore.new
+  # cli.update(["milkode"], {})
+
+  # Done
   # redirect '/'
 end
 
