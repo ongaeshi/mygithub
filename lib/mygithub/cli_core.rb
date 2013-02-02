@@ -14,6 +14,7 @@ module Mygithub
   class CliCore
     def initialize
       @settings = Settings.new
+      @dbdir    = Settings.default_database
     end
 
     def init(options)
@@ -28,12 +29,19 @@ module Mygithub
     end
 
     def update(args, options)
-      # 
-      
-      # Add git repositories
       cdstk = create_cdstk
       gh    = create_github
 
+      # Init database
+      unless File.exist? @dbdir
+        FileUtils.mkdir_p @dbdir
+        cdstk.init({})
+      end
+
+      # Create milkweb.yaml
+      create_milkweb_yaml
+      
+      # Add git repositories
       if args.empty?
         repos = gh.repo_names
       else
@@ -71,6 +79,24 @@ module Mygithub
 
     def create_cdstk
       Milkode::Cdstk.new($stdout, Settings.default_database)
+    end
+
+    def create_milkweb_yaml
+      filename = File.join(@dbdir, 'milkweb.yaml')
+
+      # @todo アイコンはAPI経由で取得する
+      File.open(filename, "w") do |f|
+        f.write <<EOF
+---
+:home_title : "MyGithub"
+:home_icon  : "http://www.gravatar.com/avatar/6377451175704e2d367ce508bffc1fa5"
+
+:header_title: "MyGithub"
+:header_icon : "http://www.gravatar.com/avatar/6377451175704e2d367ce508bffc1fa5"
+
+:display_about_milkode: false
+EOF
+      end
     end
   end
 end
