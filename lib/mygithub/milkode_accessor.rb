@@ -27,7 +27,7 @@ module Mygithub
       end
     end
 
-    def create_milkweb_yaml
+    def create_milkweb_yaml(icon_url)
       filename = File.join(@dbdir, 'milkweb.yaml')
 
       # @todo アイコンはAPI経由で取得する
@@ -35,10 +35,10 @@ module Mygithub
         f.write <<EOF
 ---
 :home_title : "MyGithub"
-:home_icon  : "http://www.gravatar.com/avatar/6377451175704e2d367ce508bffc1fa5"
+:home_icon  : #{icon_url}
 
 :header_title: "MyGithub"
-:header_icon : "http://www.gravatar.com/avatar/6377451175704e2d367ce508bffc1fa5"
+:header_icon : #{icon_url}
 
 :display_about_milkode: false
 EOF

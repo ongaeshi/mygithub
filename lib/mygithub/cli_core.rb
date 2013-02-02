@@ -16,7 +16,7 @@ module Mygithub
   class CliCore
     def initialize
       @settings = Settings.new
-      @github   = GithubAccessor.new @settings.token
+      @github   = GithubAccessor.new @settings.username, @settings.token
       @milk     = MilkodeAccessor.new Settings.default_database
     end
 
@@ -34,7 +34,7 @@ module Mygithub
     def update(args, options)
       # initialize
       @milk.init
-      @milk.create_milkweb_yaml
+      @milk.create_milkweb_yaml(@github.avatar_url)
 
       # Get repo_names
       if args.empty?

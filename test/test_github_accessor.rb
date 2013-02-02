@@ -17,7 +17,7 @@ module Mygithub
       assert_equal false, @settings.empty?
 
       # Create GithubAccessor
-      @gh = GithubAccessor.new(@settings.token)
+      @gh = GithubAccessor.new(@settings.username, @settings.token)
     end
 
     def test_token
@@ -25,8 +25,15 @@ module Mygithub
     end
 
     def test_repo_names
-      # p @gh.repo_names                                 # Exec test
-      @gh.repo_names
+      assert_not_nil @gh.repo_names
+    end
+
+    def test_username
+      assert_not_nil @gh.username
+    end
+
+    def test_avatar_url
+      assert_not_nil @gh.avatar_url
     end
   end
 end
