@@ -17,7 +17,7 @@ module Mygithub
       assert_equal false, @settings.empty?
 
       # Create GithubAccessor
-      @gh = GithubAccessor.new(@settings.username, @settings.token)
+      @gh = GithubAccessor.new(@settings.token)
     end
 
     def test_token

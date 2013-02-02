@@ -8,6 +8,7 @@
 require 'mygithub/settings'
 require 'milkode/cdstk/cdstk'
 require 'milkode/cdweb/cli_cdweb'
+require 'mygithub/github_accessor'
 
 module Mygithub
   class CliCore
@@ -27,7 +28,14 @@ module Mygithub
     end
 
     def update(options)
-      cdstk.update_all({})
+      # 
+      
+      # Add all repositories
+      cdstk = create_cdstk
+      gh    = create_github
+      repos = gh.repo_names.map{|name| 'git://github.com/' + name + '.git'}
+
+      cdstk.add(repos, {})
     end
 
     def web(options)
@@ -50,7 +58,11 @@ module Mygithub
 
     private
 
-    def cdstk
+    def create_github
+       GithubAccessor.new(@settings.token)
+    end
+
+    def create_cdstk
       Milkode::Cdstk.new($stdout, Settings.default_database)
     end
   end

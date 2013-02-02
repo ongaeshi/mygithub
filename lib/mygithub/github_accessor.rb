@@ -9,11 +9,9 @@ require 'github_api'
 
 module Mygithub
   class GithubAccessor
-    attr_reader :username
     attr_reader :token
     
-    def initialize(username, token)
-      @username = username
+    def initialize(token)
       @token    = token
 
       # @todo なぜかSSL関連でエラーが出たので認証をOFFにしている
