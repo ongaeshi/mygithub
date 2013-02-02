@@ -16,7 +16,6 @@ class Sinatra::Base
   end
 end
 
-def init_config
+get '/css/mygithub.css' do
+  scss :mygithub
 end
-
-init_config # run on startup
