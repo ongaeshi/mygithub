@@ -26,6 +26,10 @@ module Mygithub
       end
     end
 
+    def update(options)
+      puts "Update!!"
+    end
+
     def web(options)
       opts = {
         :environment   => ENV['RACK_ENV'] || "development",
