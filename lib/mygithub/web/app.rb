@@ -6,6 +6,14 @@
 # @date   2013/02/03
 
 require 'milkode/cdweb/app'
+require 'omniauth'
+require 'omniauth-github'
+
+use Rack::Session::Cookie
+use OmniAuth::Builder do
+  # provider :github, '507d8ff7541315a61b21', '8a62747fc27f1570370669d5495afdfb4f86682f', scope: "user,repo"
+  provider :github, '507d8ff7541315a61b21', '8a62747fc27f1570370669d5495afdfb4f86682f'
+end
 
 MY_VIEWS = File.dirname(__FILE__) + '/views'
 
@@ -16,10 +24,19 @@ class Sinatra::Base
   end
 end
 
-get '/login' do
-  'OAuth Github'
-end
-
 get '/css/mygithub.css' do
   scss :mygithub
 end
+
+get '/login' do
+  <<-HTML
+  <a href='/auth/github'>Sign in with Github</a>
+    HTML
+end
+
+get '/auth/github/callback' do
+  auth = request.env['omniauth.auth']
+  p [auth.credentials[:token], auth.extra[:raw_info][:login]]
+  # redirect '/'
+end
+
