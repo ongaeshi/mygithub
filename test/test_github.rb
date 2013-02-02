@@ -5,14 +5,21 @@
 # @author ongaeshi
 # @date   2012/10/15
 
-require 'mygithub/github'
+require 'mygithub/github_accessor'
 require 'test_helper'
 
 module Mygithub
-  class TestGithub < Test::Unit::TestCase
+  class TestGithubAccessor < Test::Unit::TestCase
+    def setup
+      @gh = GithubAccessor.new(ENV['GITHUB_TOKEN']) # @todo 仮
+    end
+
     def test_token
-      gh = Github.new(ENV['GITHUB_TOKEN']) # @todo 仮
-      assert_equal ENV['GITHUB_TOKEN'], gh.token
+      assert_equal ENV['GITHUB_TOKEN'], @gh.token
+    end
+
+    def test_repositories
+      # @gh.repositories
     end
   end
 end

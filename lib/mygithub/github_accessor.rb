@@ -5,12 +5,18 @@
 # @author ongaeshi
 # @date   2013/02/02
 
+require 'github_api'
+
 module Mygithub
-  class Github
+  class GithubAccessor
     attr_reader :token
     
     def initialize(token)
       @token = token
+    end
+
+    def repositories
+      Github.repos.list user: 'wycats'
     end
   end
 end
