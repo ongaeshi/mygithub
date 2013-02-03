@@ -25,6 +25,9 @@
         .span6.offset6
           %p
             = goto_github
+            <br>
+            <a href="/home">#{@package_num}</a>のパッケージ<br>
+            <a href="/home?query=f:*">#{@file_num}</a>のファイル<br>
           
         .span10.offset2
           .form
@@ -38,27 +41,25 @@
           #select_package
             = create_select_package_home
 
-      .row
-        .span3
-          %h2 最近使った
-          = @package_list.top_view
-        .span3
-          %h2 追加
-          = @package_list.top_add
-        .span3
-          %h2 更新
-          = @package_list.top_update
-        .span3
-          %h2 お気に入り
-          = @package_list.top_fav
+      -# .row
+      -#   .span3
+      -#     %h2 最近使った
+      -#     = @package_list.top_view
+      -#   .span3
+      -#     %h2 追加
+      -#     = @package_list.top_add
+      -#   .span3
+      -#     %h2 更新
+      -#     = @package_list.top_update
+      -#   .span3
+      -#     %h2 お気に入り
+      -#     = @package_list.top_fav
 
       %hr
    
       .row
         .span4.offset4
           .footer
-            <a href="/home">#{@package_num}</a>のパッケージ<br>
-            <a href="/home?query=f:*">#{@file_num}</a>のファイル<br>
             <a href="/help">ヘルプ</a>
             = @setting.about_milkode
             
