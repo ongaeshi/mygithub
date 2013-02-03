@@ -44,10 +44,15 @@ get '/auth/github/callback' do
   settings.token    = auth.credentials[:token]
   settings.save
 
+  # Done
+  redirect '/update_all'
+end
+
+get '/update_all' do
   # Update repositories
   cli = Mygithub::CliCore.new
-  # cli.update(["milkode"], {})
-  cli.update([], {})
+  cli.update(["milkode"], {})
+  # cli.update([], {})
 
   # Reopen
   Milkode::Database.instance.open
