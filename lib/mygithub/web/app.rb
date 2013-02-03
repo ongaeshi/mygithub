@@ -63,3 +63,17 @@ get '/update_all' do
   redirect '/'
 end
 
+helpers do
+  def goto_github
+    settings = Mygithub::Settings.new
+    username = settings.username
+    "<a href='https://github.com/#{username}'>Goto Github : <img src='https://raw.github.com/github/media/master/octocats/blacktocat-32.png'></img></a>"
+  end
+
+  def goto_github_project(path)
+    settings = Mygithub::Settings.new
+    username = settings.username
+    project  = package_name(path)
+    "<a href='https://github.com/#{username}/#{project}'><img src='https://raw.github.com/github/media/master/octocats/blacktocat-16.png'></img></a>"
+  end
+end
