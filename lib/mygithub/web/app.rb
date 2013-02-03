@@ -30,9 +30,8 @@ get '/css/mygithub.css' do
 end
 
 get '/login' do
-  <<-HTML
-  <a href='/auth/github'>Sign in with Github</a>
-    HTML
+  @setting = WebSetting.new
+  haml :login, :layout => false
 end
 
 get '/auth/github/callback' do
@@ -51,8 +50,9 @@ end
 get '/update_all' do
   # Update repositories
   cli = Mygithub::CliCore.new
-  cli.update(["milkode"], {})
-  # cli.update([], {})
+
+  # cli.update(["milkode"], {})
+  cli.update([], {})
 
   # Reopen
   Milkode::Database.instance.open

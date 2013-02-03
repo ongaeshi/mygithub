@@ -1,0 +1,36 @@
+!!!
+
+-# layout.haml は使いません
+
+%html(lang='ja')
+  %head
+    %meta(charset='utf-8')
+    %title= [@title, @setting.home_title].compact.join(' - ')
+    %link(rel="shortcut icon" href="#{@setting.favicon}")
+    %link(rel="stylesheet" href="/css/bootstrap.min.css"  type="text/css" media="all")
+    %link(rel="stylesheet" href="/css/bootstrap-responsive.min.css"  type="text/css" media="all")
+    %link(rel="stylesheet" href="/css/milkode.css"  type="text/css" media="all")
+    %link(rel="stylesheet" href="/css/smoothness/jquery-ui-1.8.22.custom.css" type="text/css" media="all")
+    %link(rel="stylesheet" href="/css/jquery.multiselect.css"  type="text/css" media="all")
+    %link(rel="stylesheet" href="/css/jquery.multiselect.filter.css"  type="text/css" media="all")
+    %link(rel="stylesheet" href="/css/mygithub.css"  type="text/css" media="all")
+    %link(rel="stylesheet" href="/css/auth-buttons.css"  type="text/css" media="all")
+
+  %body
+    .container#toppage
+      .row
+        .span8.offset4
+          %h1 MyGithub
+
+      %hr
+
+      .row
+        .span8.offset4
+          %a(class="btn-auth btn-github large" href="/auth/github")
+            Sign in with <b>github</b>
+
+    %script(type='text/javascript' src='/js/jquery-1.7.2.min.js')
+    %script(type='text/javascript' src='/js/jquery-ui-1.8.22.custom.min.js')
+    %script(type='text/javascript' src='/js/jquery.multiselect.min.js')
+    %script(type='text/javascript' src='/js/jquery.multiselect.filter.min.js')
+    %script(type='text/javascript' src='/js/milkode.js')
