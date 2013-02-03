@@ -21,4 +21,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'rack', '~> 1.4.0'
   gem.add_dependency 'milkode'
   gem.add_dependency 'github_api'
+  gem.add_dependency 'omniauth'
+  gem.add_dependency 'omniauth-github'
 end

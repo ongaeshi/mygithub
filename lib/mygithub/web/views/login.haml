@@ -14,53 +14,20 @@
     %link(rel="stylesheet" href="/css/jquery.multiselect.css"  type="text/css" media="all")
     %link(rel="stylesheet" href="/css/jquery.multiselect.filter.css"  type="text/css" media="all")
     %link(rel="stylesheet" href="/css/mygithub.css"  type="text/css" media="all")
+    %link(rel="stylesheet" href="/css/auth-buttons.css"  type="text/css" media="all")
 
   %body
     .container#toppage
       .row
-        .span10.offset2
-          %h1 <a href="/"><img src=#{@setting.home_icon} alt="milkode-icon" border="0" height="135px" /></a> #{@setting.home_title} <font class="version">#{@version}</font>
-
-      .row
-        .span6.offset6
-          %p
-            = goto_github
-          
-        .span10.offset2
-          .form
-            %form(method="post" action="/search")
-              %input(name="query" type="text" style="width: 419px;")
-              %input(type="submit" value="検索")
-              %input(name='pathname' type='hidden' value='/home')
-
-      .row
-        .span4.offset4
-          #select_package
-            = create_select_package_home
-
-      .row
-        .span3
-          %h2 最近使った
-          = @package_list.top_view
-        .span3
-          %h2 追加
-          = @package_list.top_add
-        .span3
-          %h2 更新
-          = @package_list.top_update
-        .span3
-          %h2 お気に入り
-          = @package_list.top_fav
+        .span8.offset4
+          %h1 MyGithub
 
       %hr
-   
+
       .row
-        .span4.offset4
-          .footer
-            <a href="/home">#{@package_num}</a>のパッケージ<br>
-            <a href="/home?query=f:*">#{@file_num}</a>のファイル<br>
-            <a href="/help">ヘルプ</a>
-            = @setting.about_milkode
+        .span8.offset4
+          %a(class="btn-auth btn-github large" href="/auth/github")
+            Sign in with <b>github</b>
 
     %script(type='text/javascript' src='/js/jquery-1.7.2.min.js')
     %script(type='text/javascript' src='/js/jquery-ui-1.8.22.custom.min.js')

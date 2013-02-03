@@ -73,11 +73,15 @@ EOF
         # ----------------------------
         :server        => options[:server],
         :LaunchBrowser => !options[:no_browser],
-        :LaunchURL     => database_exitst? ? nil : '/auth/github',
+        :LaunchURL     => database_exitst? ? nil : '/login',
         :DbDir         => options[:db],
       }
 
-      Milkode::Cdstk.new($stdout, options[:db]).assert_compatible
+      # init
+      init
+
+      # open
+      @cdstk.assert_compatible
 
       # Milkode::CLI_Cdweb.execute_with_options($stdout, opts)
       cdweb_execute_with_options($stdout, opts)

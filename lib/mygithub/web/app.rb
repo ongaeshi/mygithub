@@ -6,6 +6,15 @@
 # @date   2013/02/03
 
 require 'milkode/cdweb/app'
+require 'omniauth'
+require 'omniauth-github'
+require 'mygithub/settings'
+require 'mygithub/cli_core'
+
+use Rack::Session::Cookie
+use OmniAuth::Builder do
+  provider :github, '507d8ff7541315a61b21', '8a62747fc27f1570370669d5495afdfb4f86682f'
+end
 
 MY_VIEWS = File.dirname(__FILE__) + '/views'
 
@@ -16,10 +25,65 @@ class Sinatra::Base
   end
 end
 
-get '/auth/github' do
-  'OAuth Github'
-end
-
 get '/css/mygithub.css' do
   scss :mygithub
+end
+
+get '/login' do
+  @setting = WebSetting.new
+  haml :login, :layout => false
+end
+
+get '/auth/github/callback' do
+  auth = request.env['omniauth.auth']
+
+  # Setup mygithub.yaml
+  settings = Mygithub::Settings.new
+  settings.username = auth.extra[:raw_info][:login]
+  settings.token    = auth.credentials[:token]
+  settings.save
+
+  # Done
+  redirect '/update_all'
+end
+
+get '/update_all' do
+  # Update repositories
+  cli = Mygithub::CliCore.new
+
+  # @memo For demo
+  cli.update(["aaa"], {})
+  # @todo 本番環境はこちら！
+  # cli.update([], {})
+
+  # Reopen
+  Milkode::Database.instance.open
+
+  # Done
+  redirect '/'
+end
+
+helpers do
+  def goto_github
+    settings = Mygithub::Settings.new
+    username = settings.username
+    "<a href='https://github.com/#{username}'>Goto Github : <img src='https://raw.github.com/github/media/master/octocats/blacktocat-32.png'></img></a>"
+  end
+
+  def goto_github_project(path)
+    return "" if (path == "")
+
+    image_href = 'https://raw.github.com/github/media/master/octocats/blacktocat-16.png'
+      
+    settings = Mygithub::Settings.new
+    username = settings.username
+
+    paths = path.split('/')
+
+    if (paths.size == 1)
+      "<a href='https://github.com/#{username}/#{paths[0]}'><img src='#{image_href}'></img></a>"
+    else
+      "<a href='https://github.com/#{username}/#{paths[0]}/tree/master/#{paths[1..-1].join('/')}'><img src='#{image_href}'></img></a>"
+    end      
+  end
 end
