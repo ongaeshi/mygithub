@@ -1,0 +1,10 @@
+= haml :header_menu
+
+.content
+  = haml :search_form
+
+  .search-summary
+    <span class="keyword">#{topic_path(@path, params)}</span> <span class="total-entries">#{@total_records}</span>件（#{@elapsed}秒）<a href="https://github.com/ongaeshi/milkode"><img src="https://raw.github.com/github/media/master/octocats/blacktocat-16.png"></img></a>
+  ~ @record_content
+
+
