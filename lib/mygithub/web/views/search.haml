@@ -1,0 +1,14 @@
+= haml :header_menu
+
+.content
+  = haml :search_form
+  
+  .search-summary
+    <span class="keyword">#{topic_path(@path, params)}</span>
+    <span class="hit-num">#{@total_records}</span>ファイル中</span>
+    <span class="search-range">#{@range.first} - #{@range.last}ファイルを検索</span>
+    <span class="match-num">#{@match_num}</span>件マッチ</span>
+    （#{@elapsed}秒）
+    #{goto_github_project(@path)}
+    
+  ~ @record_content
