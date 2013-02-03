@@ -71,9 +71,19 @@ helpers do
   end
 
   def goto_github_project(path)
+    return "" if (path == "")
+
+    image_href = 'https://raw.github.com/github/media/master/octocats/blacktocat-16.png'
+      
     settings = Mygithub::Settings.new
     username = settings.username
-    project  = package_name(path)
-    "<a href='https://github.com/#{username}/#{project}'><img src='https://raw.github.com/github/media/master/octocats/blacktocat-16.png'></img></a>"
+
+    paths = path.split('/')
+
+    if (paths.size == 1)
+      "<a href='https://github.com/#{username}/#{paths[0]}'><img src='#{image_href}'></img></a>"
+    else
+      "<a href='https://github.com/#{username}/#{paths[0]}/tree/master/#{paths[1..-1].join('/')}'><img src='#{image_href}'></img></a>"
+    end      
   end
 end
