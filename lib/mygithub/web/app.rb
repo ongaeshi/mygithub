@@ -45,10 +45,14 @@ get '/auth/github/callback' do
   settings.save
 
   # Update repositories
-  # cli = Mygithub::CliCore.new
+  cli = Mygithub::CliCore.new
   # cli.update(["milkode"], {})
+  cli.update([], {})
+
+  # Reopen
+  Milkode::Database.instance.open
 
   # Done
-  # redirect '/'
+  redirect '/'
 end
 
