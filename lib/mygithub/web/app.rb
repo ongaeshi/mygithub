@@ -50,11 +50,7 @@ end
 get '/update_all' do
   # Update repositories
   cli = Mygithub::CliCore.new
-
-  # @memo For demo
-  cli.update(["aaa"], {})
-  # @todo 本番環境はこちら！
-  # cli.update([], {})
+  cli.update([], {})
 
   # Reopen
   Milkode::Database.instance.open

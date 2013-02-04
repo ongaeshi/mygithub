@@ -31,7 +31,6 @@ module Mygithub
     def create_milkweb_yaml(icon_url)
       filename = File.join(@dbdir, 'milkweb.yaml')
 
-      # @todo アイコンはAPI経由で取得する
       File.open(filename, "w") do |f|
         f.write <<EOF
 ---
