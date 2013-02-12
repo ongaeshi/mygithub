@@ -80,6 +80,12 @@ helpers do
       "<a href='https://github.com/#{username}/#{paths[0]}'><img src='#{image_href}'></img></a>"
     else
       "<a href='https://github.com/#{username}/#{paths[0]}/tree/master/#{paths[1..-1].join('/')}'><img src='#{image_href}'></img></a>"
-    end      
+    end
   end
+
+  # .search-summary に追加情報を表示したい時はこの関数をオーバーライド
+  def search_summary_hook(path)
+    goto_github_project(path)
+  end
+  
 end
