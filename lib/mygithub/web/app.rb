@@ -5,7 +5,7 @@
 # @author ongaeshi
 # @date   2013/02/03
 
-require 'milkode/cdweb/app'
+require 'milkode/cdweb/app_prev'
 require 'omniauth'
 require 'omniauth-github'
 require 'mygithub/settings'
@@ -58,6 +58,8 @@ get '/update_all' do
   # Done
   redirect '/'
 end
+
+require 'milkode/cdweb/app_after'
 
 helpers do
   def goto_github
