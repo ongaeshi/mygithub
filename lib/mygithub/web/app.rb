@@ -5,6 +5,7 @@
 # @author ongaeshi
 # @date   2013/02/03
 
+$LOAD_PATH.unshift '../..'
 require 'milkode/cdweb/app_prev'
 require 'omniauth'
 require 'omniauth-github'
