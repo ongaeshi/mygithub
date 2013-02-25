@@ -12,6 +12,11 @@ require 'omniauth'
 require 'omniauth-github'
 require 'mygithub/settings'
 require 'mygithub/cli_core'
+require 'mygithub/settings'
+require 'milkode/cdweb/lib/database'
+
+# データベースは ~/.mygithub 固定
+Milkode::Database.setup(Mygithub::Settings.default_database)
 
 use Rack::Session::Cookie
 use OmniAuth::Builder do
