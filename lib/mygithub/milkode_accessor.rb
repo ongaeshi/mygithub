@@ -46,7 +46,7 @@ EOF
     end
 
     def add(args)
-      @cdstk.add(args, {})
+      @cdstk.add(args, {:same_add => true})
     end
 
     def update(args)

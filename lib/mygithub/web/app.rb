@@ -5,11 +5,18 @@
 # @author ongaeshi
 # @date   2013/02/03
 
+$LOAD_PATH.unshift '../..'
+NO_REQUIRE_APP_ERROR = true
 require 'milkode/cdweb/app'
 require 'omniauth'
 require 'omniauth-github'
 require 'mygithub/settings'
 require 'mygithub/cli_core'
+require 'mygithub/settings'
+require 'milkode/cdweb/lib/database'
+
+# データベースは ~/.mygithub 固定
+Milkode::Database.setup(Mygithub::Settings.default_database)
 
 use Rack::Session::Cookie
 use OmniAuth::Builder do
@@ -59,6 +66,8 @@ get '/update_all' do
   redirect '/'
 end
 
+require 'milkode/cdweb/app_error'
+
 helpers do
   def goto_github
     settings = Mygithub::Settings.new
@@ -80,6 +89,11 @@ helpers do
       "<a href='https://github.com/#{username}/#{paths[0]}'><img src='#{image_href}'></img></a>"
     else
       "<a href='https://github.com/#{username}/#{paths[0]}/tree/master/#{paths[1..-1].join('/')}'><img src='#{image_href}'></img></a>"
-    end      
+    end
+  end
+
+  # .search-summary に追加情報を表示したい時はこの関数をオーバーライド
+  def search_summary_hook(path)
+    goto_github_project(path)
   end
 end
