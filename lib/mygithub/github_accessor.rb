@@ -16,19 +16,15 @@ module Mygithub
       @username = username
       @token    = token
 
-      begin
-        @github = Github.new(:oauth_token => @token)
-        avatar_url
-      rescue Faraday::Error::ConnectionFailed
-        puts "WARNING: Faraday::Error::ConnectionFailed: Change config.ssl = {verify: false}"
-        @github = Github.new do |config|
-          config.endpoint    = 'https://api.github.com/'
-          config.user        = username
-          config.oauth_token = token                      # @memo 何故か'@token'にすると動かない
-          config.adapter     = :net_http
-          config.ssl         = {:verify => false}
-        end
-      end
+      @github = Github.new(:oauth_token => @token)
+      # @memo SSL証明書絡みでエラーが出たらこちら
+      # @github = Github.new do |config|
+      #   config.endpoint    = 'https://api.github.com/'
+      #   config.user        = username
+      #   config.oauth_token = token                      # @memo 何故か'@token'にすると動かない
+      #   config.adapter     = :net_http
+      #   config.ssl         = {:verify => false}
+      # end      
     end
 
     class Repository
