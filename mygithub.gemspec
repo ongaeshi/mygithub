@@ -8,9 +8,9 @@ Gem::Specification.new do |gem|
   gem.version       = Mygithub::VERSION
   gem.authors       = ["ongaeshi"]
   gem.email         = ["ongaeshi0621@gmail.com"]
-  gem.description   = %q{Fast search in offline Github source code of its own.}
-  gem.summary       = %q{Fast search in offline Github source code of its own.}
-  gem.homepage      = ""
+  gem.description   = %q{Fast search my Github source code in offline.}
+  gem.summary       = %q{Fast search my Github source code in offline.}
+  gem.homepage      = "https://github.com/ongaeshi/mygithub"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
