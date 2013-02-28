@@ -46,8 +46,10 @@ module Mygithub
       # update or add
       add_repos    = []
       update_repos = []
-      
+
       names.each do |name|
+        next if name.match("/")
+        
         unless @milk.exist? name
           add_repos << "git://github.com/#{@settings.username}/#{name}.git"
         else
