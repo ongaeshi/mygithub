@@ -6,7 +6,6 @@
 # @date   2013/02/03
 
 $LOAD_PATH.unshift '../..'
-NO_REQUIRE_APP_ERROR = true
 require 'milkode/cdweb/app'
 require 'omniauth'
 require 'omniauth-github'
@@ -65,8 +64,6 @@ get '/update_all' do
   # Done
   redirect '/'
 end
-
-require 'milkode/cdweb/app_error'
 
 helpers do
   def goto_github
